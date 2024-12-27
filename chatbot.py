@@ -9,7 +9,7 @@ import spacy
 
 
 os.environ["OPENAI_API_KEY"] = ""
-nlp = spacy.load("en_core_web_sm")
+# nlp = spacy.load("en_core_web_sm")
 
 relationship_levels = ["aloof", "friendly", "affectionate"]
 
@@ -29,18 +29,18 @@ def determine_relationship_level(user_input, chat_history):
     else:
         return "friendly"
 
-def extract_entities(user_input):
-    doc = nlp(user_input)
-    entities = {ent.label_: ent.text for ent in doc.ents}
-    return entities
+# def extract_entities(user_input):
+#     doc = nlp(user_input)
+#     entities = {ent.label_: ent.text for ent in doc.ents}
+#     return entities
 
 chat_model = ChatOpenAI(model="gpt-4o-mini", temperature=0.7)
 
 def get_chatbot_response(user_input, character):
     chat_history = memory.load_memory_variables(inputs={}).get("chat_history", "")
 
-    entities = extract_entities(user_input)
-    entity_info = "\n".join([f"{key}: {value}" for key, value in entities.items()])
+    # entities = extract_entities(user_input)
+    # entity_info = "\n".join([f"{key}: {value}" for key, value in entities.items()])
 
     relationship_level = determine_relationship_level(user_input, chat_history)
 
@@ -48,7 +48,7 @@ def get_chatbot_response(user_input, character):
         relationship_level=relationship_level,
         chat_history=chat_history,
         input=user_input,
-        entities=entity_info
+        # entities=entity_info
     )
 
     response = chat_model.predict(prompt).strip()
